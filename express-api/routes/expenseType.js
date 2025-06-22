@@ -1,4 +1,3 @@
-// routes/expenseType.js
 const express = require('express');
 const router = express.Router();
 
@@ -10,12 +9,12 @@ let expenseTypes = [
     { id: 5, name: 'Healthcare' }
 ];
 
-// GET all expense types
+
 router.get('/', (req, res) => {
     res.status(200).json(expenseTypes);
 });
 
-// POST new expense type
+
 router.post('/', (req, res) => {
     const { name } = req.params;
 
@@ -32,7 +31,7 @@ router.post('/', (req, res) => {
     res.status(201).json(newType);
 });
 
-// PUT update expense type
+
 router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
@@ -51,7 +50,7 @@ router.put('/:id', (req, res) => {
 });
 
 
-// DELETE expense type
+
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const index = expenseTypes.findIndex(type => type.id === parseInt(id));
