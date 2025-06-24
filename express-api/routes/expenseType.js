@@ -6,7 +6,6 @@ let expenseTypes = [
     { id: 2, name: 'Transaction' },
     { id: 3, name: 'Utilities' },
     { id: 4, name: 'Transportation' },
-    { id: 5, name: 'Healthcare' }
 ];
 
 
@@ -15,20 +14,13 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
-    const { name } = req.params;
+router.post('/create', (req, res) => {
+    const { name } = req.body;
 
-    if (!name) {
-        return res.status(200).json({ error: 'Name is required' });
+    if (!name || name.trim() === '') {
+        return res.status(400).json({ error: name });
     }
-
-    const newType = {
-        id: expenseTypes.length + 1,
-        name
-    };
-
-    expenseTypes.push(newType);
-    res.status(201).json(newType);
+    res.status(200).json(newType);
 });
 
 
@@ -41,14 +33,13 @@ router.put('/:id', (req, res) => {
         return res.status(404).json({ error: 'Expense type not found' });
     }
 
-    if (!name) {
+    if (!name || typeof name !== 'string' || name.trim() === '') {
         return res.status(400).json({ error: 'Name is required' });
     }
 
-    expenseType.name = name;
+    expenseType.name = name.trim();
     res.status(200).json(expenseType);
 });
-
 
 
 router.delete('/:id', (req, res) => {
@@ -60,7 +51,7 @@ router.delete('/:id', (req, res) => {
     }
 
     const deleted = expenseTypes.splice(index, 1);
-    res.status(200).json({ message: 'Expense type deleted', deleted: deleted[1] });
+    res.status(200).json({ message: 'Deleted Successfully!', deleted: deleted[0] });
 });
 
 module.exports = router;
