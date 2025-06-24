@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const expenseTypeRoutes = require('./routes/expenseType');
@@ -17,6 +16,6 @@ app.use((req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+app.listen(3001, () => {
+  console.log("Server running on port 3001");
 });
