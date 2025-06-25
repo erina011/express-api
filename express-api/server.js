@@ -1,14 +1,11 @@
 const express = require('express');
-const cors = require('cors');
 const app = express();
-const expenseTypeRoutes = require('./routes/expenseType');
+const expenseTypeRoutes = require('./routes/expenseTypes'); // adjust path if needed
 
-app.use(cors());
-app.use(express.json()); 
+app.use(express.json()); // VERY IMPORTANT
+app.use('/api/expenses', expenseTypeRoutes); // Your mounted route
 
-app.use('/api/expenses', expenseTypeRoutes);
-
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
