@@ -14,15 +14,21 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/create', (req, res) => {
+router.post('/', (req, res) => {
     const { name } = req.body;
-
+    
     if (!name || name.trim() === '') {
-        return res.status(400).json({ error: name });
+        return res.status(400).json({ error: 'Name is required' });
     }
+
+    const newType = {
+        id: expenseTypes.length ? expenseTypes[expenseTypes.length - 1].id + 1 : 1,
+        name: name.trim()
+    };
+
+    expenseTypes.push(newType);
     res.status(200).json(newType);
 });
-
 
 router.put('/:id', (req, res) => {
     const { id } = req.params;
@@ -30,28 +36,27 @@ router.put('/:id', (req, res) => {
 
     const expenseType = expenseTypes.find(type => type.id === parseInt(id));
     if (!expenseType) {
-        return res.status(404).json({ error: 'Expense type not found' });
+        return res.status(404).json({ error: 'Expense type not found', message: 'Update Failed' });
     }
 
     if (!name || typeof name !== 'string' || name.trim() === '') {
-        return res.status(400).json({ error: 'Name is required' });
+        return res.status(400).json({ error: 'Name is required', message: 'New' });
     }
 
     expenseType.name = name.trim();
-    res.status(200).json(expenseType);
+    res.status(200).json({ message: 'Update Successfully!'});
 });
 
-
+// ✅ DELETE
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const index = expenseTypes.findIndex(type => type.id === parseInt(id));
 
     if (index === -1) {
-        return res.status(404).json({ error: 'Expense type not found' });
+        return res.status(404).json({ error: 'Expense type not found', message: 'Nothing to delete' });
     }
 
     const deleted = expenseTypes.splice(index, 1);
-    res.status(200).json({ message: 'Deleted Successfully!', deleted: deleted[0] });
+    res.status(200).json({ message: 'Deleted Successfully!'});
 });
-
 module.exports = router;
