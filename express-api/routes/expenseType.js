@@ -18,7 +18,6 @@ router.post('/', (req, res) => {
     }
 
     const { name } = req.body;
-    
 
     if (!name || name.trim() === '') {
         return res.status(400).json({ error: 'Name is required' });
@@ -30,7 +29,6 @@ router.post('/', (req, res) => {
     };
 
     expenseTypes.push(newType);
-    res.status(200).json(newType);
     res.status(200).json(newType)({ message: 'Created Successfully!'});
 });
 
@@ -44,7 +42,6 @@ router.put('/:id', (req, res) => {
     }
 
     if (!name || typeof name !== 'string' || name.trim() === '') {
-        return res.status(400).json({ error: 'Name is required', message: 'New' });
         return res.status(400).json({ error: 'Name is required', message: 'New is required' });
     }
 
