@@ -8,15 +8,18 @@ let expenseTypes = [
     { id: 4, name: 'Transportation' },
 ];
 
-
 router.get('/', (req, res) => {
     res.status(200).json(expenseTypes);
 });
 
-
 router.post('/', (req, res) => {
+    if (!req.body || typeof req.params !== 'object') {
+        return res.status(400).json({ error: 'Missing JSON body' });
+    }
+
     const { name } = req.body;
     
+
     if (!name || name.trim() === '') {
         return res.status(400).json({ error: 'Name is required' });
     }
@@ -28,6 +31,7 @@ router.post('/', (req, res) => {
 
     expenseTypes.push(newType);
     res.status(200).json(newType);
+    res.status(200).json(newType)({ message: 'Created Successfully!'});
 });
 
 router.put('/:id', (req, res) => {
@@ -41,13 +45,13 @@ router.put('/:id', (req, res) => {
 
     if (!name || typeof name !== 'string' || name.trim() === '') {
         return res.status(400).json({ error: 'Name is required', message: 'New' });
+        return res.status(400).json({ error: 'Name is required', message: 'New is required' });
     }
 
     expenseType.name = name.trim();
     res.status(200).json({ message: 'Update Successfully!'});
 });
 
-// ✅ DELETE
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const index = expenseTypes.findIndex(type => type.id === parseInt(id));
