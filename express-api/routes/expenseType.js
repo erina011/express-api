@@ -6,6 +6,8 @@ let expenseTypes = [
     { id: 2, name: 'Transaction' },
     { id: 3, name: 'Utilities' },
     { id: 4, name: 'Transportation' },
+    { id: 5, name: 'Education' },
+    
 ];
 
 router.get('/', (req, res) => {
