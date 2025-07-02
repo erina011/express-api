@@ -2,53 +2,49 @@ const express = require('express');
 const router = express.Router();
 
 let expenseTypes = [
-    { id: 1, name: 'Food' },
-    { id: 2, name: 'Transaction' },
-    { id: 3, name: 'Utilities' },
-    { id: 4, name: 'Transportation' },
-    { id: 5, name: 'Education' },
-    
+    { id: 1, code: 'FOOD', description: 'Daily meals and snacks' },
+    { id: 2, code: 'TRXN', description: 'Bank or online transactions' },
+    { id: 3, code: 'UTIL', description: 'Electricity, water, and internet bills' },
+    { id: 4, code: 'TRANS', description: 'Transport fare and fuel' },
 ];
 
 router.get('/', (req, res) => {
     res.status(200).json(expenseTypes);
 });
 
-router.post('/', (req, res) => {
-    if (!req.body || typeof req.params !== 'object') {
-        return res.status(400).json({ error: 'Missing JSON body' });
-    }
+router.post('/create', (req, res) => {
+    const { code, description } = req.body;
 
-    const { name } = req.body;
-
-    if (!name || name.trim() === '') {
-        return res.status(400).json({ error: 'Name is required' });
+    if (!code || !description || code.trim() === '' || description.trim() === '') {
+        return res.status(400).json({ error: 'Code and description are required' });
     }
 
     const newType = {
         id: expenseTypes.length ? expenseTypes[expenseTypes.length - 1].id + 1 : 1,
-        name: name.trim()
+        code: code.trim(),
+        description: description.trim()
     };
 
     expenseTypes.push(newType);
-    res.status(200).json(newType)({ message: 'Created Successfully!'});
+    res.status(200).json({ message: 'Created Successfully!', data: newType });
 });
 
 router.put('/:id', (req, res) => {
     const { id } = req.params;
-    const { name } = req.body;
+    const { code, description } = req.body;
 
     const expenseType = expenseTypes.find(type => type.id === parseInt(id));
     if (!expenseType) {
         return res.status(404).json({ error: 'Expense type not found', message: 'Update Failed' });
     }
 
-    if (!name || typeof name !== 'string' || name.trim() === '') {
-        return res.status(400).json({ error: 'Name is required', message: 'New is required' });
+    if (!code || !description || code.trim() === '' || description.trim() === '') {
+        return res.status(400).json({ error: 'Code and description are required' });
     }
 
-    expenseType.name = name.trim();
-    res.status(200).json({ message: 'Update Successfully!'});
+    expenseType.code = code.trim();
+    expenseType.description = description.trim();
+    res.status(200).json({ message: 'Updated Successfully!', data: expenseType });
 });
 
 router.delete('/:id', (req, res) => {
@@ -59,7 +55,8 @@ router.delete('/:id', (req, res) => {
         return res.status(404).json({ error: 'Expense type not found', message: 'Nothing to delete' });
     }
 
-    const deleted = expenseTypes.splice(index, 1);
-    res.status(200).json({ message: 'Deleted Successfully!'});
+    expenseTypes.splice(index, 1);
+    res.status(200).json({ message: 'Deleted Successfully!' });
 });
+
 module.exports = router;
