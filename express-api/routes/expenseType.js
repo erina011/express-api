@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 let expenseTypes = [
     { id: 1, code: 'FOOD', description: 'Daily meals and snacks' },
     { id: 2, code: 'TRXN', description: 'Bank or online transactions' },
@@ -8,11 +9,11 @@ let expenseTypes = [
     { id: 4, code: 'TRANS', description: 'Transport fare and fuel' },
 ];
 
-router.get('/', (req, res) => {
+router.get('/GetAll', (req, res) => {
     res.status(200).json(expenseTypes);
 });
 
-router.post('/create', (req, res) => {
+router.post('/Create', (req, res) => {
     const { code, description } = req.body;
 
     if (!code || !description || code.trim() === '' || description.trim() === '') {
@@ -29,7 +30,7 @@ router.post('/create', (req, res) => {
     res.status(200).json({ message: 'Created Successfully!', data: newType });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/Update/:id', (req, res) => {
     const { id } = req.params;
     const { code, description } = req.body;
 
@@ -47,7 +48,7 @@ router.put('/:id', (req, res) => {
     res.status(200).json({ message: 'Updated Successfully!', data: expenseType });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/Delete/:id', (req, res) => {
     const { id } = req.params;
     const index = expenseTypes.findIndex(type => type.id === parseInt(id));
 
