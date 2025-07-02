@@ -12,7 +12,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type'], 
 };
 
-app.use('/api/expenses', expenseTypeRoutes);
+app.use('/api/expenses/types/v1', expenseTypeRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
